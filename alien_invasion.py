@@ -4,6 +4,8 @@ import sys
 import pygame
 # Step 3, creating settings.py and importing initial screen settings
 from settings import Settings
+# Step 4, creating ship.py and importing in class to use
+from ship import Ship
 
 
 class AlienInvasion:
@@ -16,11 +18,13 @@ class AlienInvasion:
 
         # Actual object assigned to self.screen is called a "surface". It is a visible layer that can contain game
         # elements. Each element in the game, like a ship or an alien, is its own surface.
-        self.screen = pygame.display.set_mode(self.settings.screen_width, self.settings.screen_height)
+        self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
         # this surface represents entire game window/frame, originally (1200,800) was passed into set_mode for testing
         # but refactored after settings.py created
 
         pygame.display.set_caption("Alien Invasion")
+
+        self.ship = Ship(self)  # the self being passed is the instance of the game which is the one arg needed
 
         # Step 2 Set background color
         # self.bg_color = (230, 230, 230) Step 3, no longer needed once settings.py created
@@ -36,9 +40,14 @@ class AlienInvasion:
                     sys.exit()
 
             # Step 2 Redraw the screen during each pass through the loop
-            #  - background color
-            self.screen.fill(self.settings.bg_color)  # fill() is a surface method, originally self.bg_color for
-            # testing, refactored to settings property
+            #  - background color, ship
+
+            # fill() is a surface method, originally self.bg_color for testing, refactored to settings property
+            self.screen.fill(self.settings.bg_color)
+
+            # draw ship in its current position which places it on top of the background surface
+            self.ship.blitme()
+
 
             # Make the most recently drawn screen visible
             pygame.display.flip()
