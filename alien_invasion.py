@@ -36,8 +36,6 @@ class AlienInvasion:
             self.ship.update()  # Step 5 Ship movement flag check
             self._update_screen()  # Step 4 Refactor - create helper method
 
-
-
     def _check_events(self):
         """Event loop that watches for keyboard and mouse events"""
         # pygame.event.get() returns list of detected events that have occurred since loop last run
@@ -46,22 +44,27 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:  # Step 5 Check for keydown event
-                if event.key == pygame.K_RIGHT:  # Is keydown the right arrow
-                    # Move the ship to the right
-                    # self.ship.rect.x += 1  Used for initial testing of Step 5, now adding continuous movement via
-                    # the ship instance
-                    self.ship.moving_right = True
-                elif event.key == pygame.K_LEFT:  # Is keydown the left arrow
-                    self.ship.moving_left = True
+                self._check_keydown_events(event)  # Step 6 - use helper method
             elif event.type == pygame.KEYUP:  # Step 5 Check for keyup event
-                if event.key == pygame.K_RIGHT:  # Is keyup the right arrow
-                    # stop right movement
-                    self.ship.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
+                self._check_keyup_events(event)  # Step 6 - use helper method
 
+    def _check_keydown_events(self, event):  # Step 6 Refactored check_events
+        """Respond to key presses"""
+        if event.key == pygame.K_RIGHT:  # Is keydown the right arrow
+            # Move the ship to the right
+            # self.ship.rect.x += 1  Used for initial testing of Step 5, now adding continuous movement via
+            # the ship instance
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:  # Is keydown the left arrow
+            self.ship.moving_left = True
 
-
+    def _check_keyup_events(self, event):  # Step 6 Refactored check_events
+        """Respond to key releases"""
+        if event.key == pygame.K_RIGHT:  # Is keyup the right arrow
+            # stop right movement
+            self.ship.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
