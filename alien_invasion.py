@@ -33,6 +33,7 @@ class AlienInvasion:
         """Start the main loop for the game"""
         while True:
             self._check_events()  # Step 4 Refactor - create helper method
+            self.ship.update()  # Step 5 Ship movement flag check
             self._update_screen()  # Step 4 Refactor - create helper method
 
 
@@ -44,6 +45,19 @@ class AlienInvasion:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:  # Step 5 Check for keydown event
+                if event.key == pygame.K_RIGHT:  # Is keydown the right arrow
+                    # Move the ship to the right
+                    # self.ship.rect.x += 1  Used for initial testing of Step 5, now adding continuous movement via
+                    # the ship instance
+                    self.ship.moving_right = True
+            elif event.type == pygame.KEYUP:  # Step 5 Check for keyup event
+                if event.key == pygame.K_RIGHT:  # Is keyup the right arrow
+                    # stop right movement
+                    self.ship.moving_right = False
+
+
+
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""

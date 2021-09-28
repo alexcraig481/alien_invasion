@@ -21,6 +21,14 @@ class Ship:
         # Using the the midbottom point of screen's rect to establish origin midpoint of ship's rect
         self.rect.midbottom = self.screen_rect.midbottom
 
+        # Movement flag, Step 5, Adding for continuous movement
+        self.moving_right = False
+
+    def update(self):
+        """Update the ship's position based on the movement flag"""
+        if self.moving_right:
+            self.rect.x += 1
+
     def blitme(self):
         """Draws the ship at its current location"""
         self.screen.blit(self.image, self.rect)
