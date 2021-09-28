@@ -32,9 +32,9 @@ class Ship:
         """Update the ship's position based on the movement flag"""
         # Changed so the ship's x value is updated, not the rect, this way we can keep track of float speed,
         # rect only does int
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:  # compare position to screen boundaries
             self.x += self.settings.ship_speed
-        if self.moving_left:
+        if self.moving_left and self.rect.left > 0:  # compare position to screen boundaries
             self.x -= self.settings.ship_speed
 
         # Update rect obj from self.x
