@@ -23,11 +23,14 @@ class Ship:
 
         # Movement flag, Step 5, Adding for continuous movement
         self.moving_right = False
+        self.moving_left = False
 
     def update(self):
         """Update the ship's position based on the movement flag"""
         if self.moving_right:
             self.rect.x += 1
+        if self.moving_left:
+            self.rect.x -= 1
 
     def blitme(self):
         """Draws the ship at its current location"""

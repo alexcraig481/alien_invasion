@@ -51,10 +51,14 @@ class AlienInvasion:
                     # self.ship.rect.x += 1  Used for initial testing of Step 5, now adding continuous movement via
                     # the ship instance
                     self.ship.moving_right = True
+                elif event.key == pygame.K_LEFT:  # Is keydown the left arrow
+                    self.ship.moving_left = True
             elif event.type == pygame.KEYUP:  # Step 5 Check for keyup event
                 if event.key == pygame.K_RIGHT:  # Is keyup the right arrow
                     # stop right movement
                     self.ship.moving_right = False
+                elif event.key == pygame.K_LEFT:
+                    self.ship.moving_left = False
 
 
 
