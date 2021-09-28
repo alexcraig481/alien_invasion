@@ -32,25 +32,28 @@ class AlienInvasion:
     def run_game(self):
         """Start the main loop for the game"""
         while True:
-            # Event loop that watches for keyboard and mouse events
-            # pygame.event.get() returns list of detected events that have occurred since loop last run
-            # Any event will cause this loop to run
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    sys.exit()
-
-            # Step 2 Redraw the screen during each pass through the loop
-            #  - background color, ship
-
-            # fill() is a surface method, originally self.bg_color for testing, refactored to settings property
-            self.screen.fill(self.settings.bg_color)
-
-            # draw ship in its current position which places it on top of the background surface
-            self.ship.blitme()
+            self._check_events()  # Step 4 Refactor - create helper method
+            self._update_screen()  # Step 4 Refactor - create helper method
 
 
-            # Make the most recently drawn screen visible
-            pygame.display.flip()
+
+    def _check_events(self):
+        """Event loop that watches for keyboard and mouse events"""
+        # pygame.event.get() returns list of detected events that have occurred since loop last run
+        # Any event will cause this loop to run
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+    def _update_screen(self):
+        """Update images on the screen and flip to the new screen"""
+        # Step 2 Redraw the screen during each pass through the loop
+        # fill() is a surface method, originally self.bg_color for testing, refactored to settings property
+        self.screen.fill(self.settings.bg_color)
+        # draw ship in its current position which places it on top of the background surface
+        self.ship.blitme()
+        # Make the most recently drawn screen visible
+        pygame.display.flip()
 
 
 if __name__ == '__main__':
