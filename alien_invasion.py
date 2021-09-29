@@ -25,7 +25,7 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)  # the self being passed is the instance of the game which is the one arg needed
-
+        self.bullets = pygame.sprite.Group()  # Group behaves like a list, will store all live bullets
         # Step 2 Set background color
         # self.bg_color = (230, 230, 230) Step 3, no longer needed once settings.py created
 
@@ -34,6 +34,7 @@ class AlienInvasion:
         while True:
             self._check_events()  # Step 4 Refactor - create helper method
             self.ship.update()  # Step 5 Ship movement flag check
+            self.bullets.update()  
             self._update_screen()  # Step 4 Refactor - create helper method
 
     def _check_events(self):
