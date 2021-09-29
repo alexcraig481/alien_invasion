@@ -6,6 +6,7 @@ import pygame
 from settings import Settings
 # Step 4, creating ship.py and importing in class to use
 from ship import Ship
+from bullet import Bullet
 
 
 class AlienInvasion:
@@ -34,7 +35,7 @@ class AlienInvasion:
         while True:
             self._check_events()  # Step 4 Refactor - create helper method
             self.ship.update()  # Step 5 Ship movement flag check
-            self.bullets.update()  
+            self.bullets.update()
             self._update_screen()  # Step 4 Refactor - create helper method
 
     def _check_events(self):
@@ -60,6 +61,8 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_q:
             sys.exit()
+        elif event.key == pygame.K_SPACE:
+            self._fire_bullet()
 
     def _check_keyup_events(self, event):  # Step 6 Refactored check_events
         """Respond to key releases"""
@@ -69,6 +72,11 @@ class AlienInvasion:
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+    def _fire_bullet(self):
+        """Create a new bullet and add it to the bullets group"""
+        new_bullet = Bullet(self)
+        self.bullets.add(new_bullet)  # add is like append but written for pygame games
+
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
         # Step 2 Redraw the screen during each pass through the loop
@@ -76,6 +84,8 @@ class AlienInvasion:
         self.screen.fill(self.settings.bg_color)
         # draw ship in its current position which places it on top of the background surface
         self.ship.blitme()
+        for bullet in self.bullets.sprites():  # goes through list of all sprites in bullets and draw each one
+            bullet.draw_bullet()
         # Make the most recently drawn screen visible
         pygame.display.flip()
 

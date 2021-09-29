@@ -28,4 +28,4 @@ class Bullet(Sprite):  # inheriting from Sprite - allows grouping of related ele
 
     def draw_bullet(self):
         """Draw the bullet to screen"""
-        pygame.draw.rect(self.screen, self.color.self.rect)
+        pygame.draw.rect(self.screen, self.color, self.rect)
