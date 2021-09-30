@@ -7,6 +7,7 @@ from settings import Settings
 # Step 4, creating ship.py and importing in class to use
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 
 class AlienInvasion:
@@ -27,6 +28,8 @@ class AlienInvasion:
 
         self.ship = Ship(self)  # the self being passed is the instance of the game which is the one arg needed
         self.bullets = pygame.sprite.Group()  # Group behaves like a list, will store all live bullets
+        self.aliens = pygame.sprite.Group()
+        self._create_fleet()
         # Step 2 Set background color
         # self.bg_color = (230, 230, 230) Step 3, no longer needed once settings.py created
 
@@ -99,8 +102,17 @@ class AlienInvasion:
         self.ship.blitme()
         for bullet in self.bullets.sprites():  # goes through list of all sprites in bullets and draw each one
             bullet.draw_bullet()
+        # draws each element in the group at the position defined by rect, only required argument for draw() is a
+        # surface on which to draw the group elements
+        self.aliens.draw(self.screen)
         # Make the most recently drawn screen visible
         pygame.display.flip()
+
+    def _create_fleet(self):
+        """Create the fleet of aliens"""
+        # Make an alien
+        alien = Alien(self)  #ai_game automatically passed in with self
+        self.aliens.add(alien)
 
 
 if __name__ == '__main__':
