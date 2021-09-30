@@ -35,7 +35,9 @@ class AlienInvasion:
         while True:
             self._check_events()  # Step 4 Refactor - create helper method
             self.ship.update()  # Step 5 Ship movement flag check
-            self.bullets.update()
+            self._update_bullets()
+
+            print(len(self.bullets))
             self._update_screen()  # Step 4 Refactor - create helper method
 
     def _check_events(self):
@@ -74,8 +76,19 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group"""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)  # add is like append but written for pygame games
+        if len(self.bullets) < self.settings.bullets_allowed:  # limits number of live bullets
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)  # add is like append but written for pygame games
+
+    def _update_bullets(self):
+        """Update position of bullets and get rid of old bullets"""
+        # Update bullet positions
+        self.bullets.update()
+
+        # Get rid of bullets have have disappeared
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
