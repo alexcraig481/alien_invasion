@@ -39,6 +39,7 @@ class AlienInvasion:
             self._check_events()  # Step 4 Refactor - create helper method
             self.ship.update()  # Step 5 Ship movement flag check
             self._update_bullets()
+            self._update_aliens()
 
             print(len(self.bullets))
             self._update_screen()  # Step 4 Refactor - create helper method
@@ -92,6 +93,10 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+
+    def _update_aliens(self):
+        """Update the positions of aliens in the fleet"""
+        self.aliens.update()  # calls update on every alien in group
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
