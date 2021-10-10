@@ -38,10 +38,11 @@ class AlienInvasion:
     def run_game(self):
         """Start the main loop for the game"""
         while True:
-            self._check_events()  # Step 4 Refactor - create helper method
-            self.ship.update()  # Step 5 Ship movement flag check
-            self._update_bullets()
-            self._update_aliens()
+            self._check_events()  # always need to call even if the game is inactive
+            if self.stats.game_active:
+                self.ship.update()  # Step 5 Ship movement flag check
+                self._update_bullets()
+                self._update_aliens()
 
             print(len(self.bullets))
             self._update_screen()  # Step 4 Refactor - create helper method
@@ -178,18 +179,22 @@ class AlienInvasion:
     def _ship_hit(self):
         """Respond to the ship being hit by an alien"""
         # Decrement ships left
-        self.stats.ships_left -= 1
+        if self.stats.ships_left > 0:
+            self.stats.ships_left -= 1
 
-        # Get rid of any remaining aliens and bullets
-        self.aliens.empty()
-        self.bullets.empty()
+            # Get rid of any remaining aliens and bullets
+            self.aliens.empty()
+            self.bullets.empty()
 
-        # Create a new fleet and center the ship
-        self._create_fleet()
-        self.ship.center_ship()  # new method in ship class
+            # Create a new fleet and center the ship
+            self._create_fleet()
+            self.ship.center_ship()  # new method in ship class
 
-        # Pause
-        sleep(0.5)
+            # Pause
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+
 
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
