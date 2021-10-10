@@ -111,6 +111,13 @@ class AlienInvasion:
         self._check_fleet_edges()  # drops aliens and changes direction if at an alien is at an edge
         self.aliens.update()  # calls update on every alien in group
 
+        # Look for alien-ship collisions
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            print("Ship hit!!!")
+
+
+
+
     def _update_screen(self):
         """Update images on the screen and flip to the new screen"""
         # Step 2 Redraw the screen during each pass through the loop
