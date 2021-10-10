@@ -108,32 +108,14 @@ class AlienInvasion:
             self.bullets.empty()
             self._create_fleet()
 
-    def _update_aliens(self):
-        """Check if the fleet is at an edge, then update positions of all aliens in the fleet"""
-        self._check_fleet_edges()  # drops aliens and changes direction if at an alien is at an edge
-        self.aliens.update()  # calls update on every alien in group
-
-        # Look for alien-ship collisions
-        if pygame.sprite.spritecollideany(self.ship, self.aliens):
-            print("Ship hit!!!")
-
-
-
-
-    def _update_screen(self):
-        """Update images on the screen and flip to the new screen"""
-        # Step 2 Redraw the screen during each pass through the loop
-        # fill() is a surface method, originally self.bg_color for testing, refactored to settings property
-        self.screen.fill(self.settings.bg_color)
-        # draw ship in its current position which places it on top of the background surface
-        self.ship.blitme()
-        for bullet in self.bullets.sprites():  # goes through list of all sprites in bullets and draw each one
-            bullet.draw_bullet()
-        # draws each element in the group at the position defined by rect, only required argument for draw() is a
-        # surface on which to draw the group elements
-        self.aliens.draw(self.screen)
-        # Make the most recently drawn screen visible
-        pygame.display.flip()
+    def _create_alien(self, alien_number, row_number):
+        """Create an alien and place it in the row"""
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
+        alien.x = alien_width + (2 * alien_width) * alien_number
+        alien.rect.x = alien.x
+        alien.rect.y = alien.rect.height + (2 * alien_height) * row_number
+        self.aliens.add(alien)
 
     def _create_fleet(self):
         """Create the fleet of aliens"""
@@ -159,6 +141,15 @@ class AlienInvasion:
             # self.aliens.add(alien)   refactored out
                 self._create_alien(alien_number, row_number)
 
+    def _update_aliens(self):
+        """Check if the fleet is at an edge, then update positions of all aliens in the fleet"""
+        self._check_fleet_edges()  # drops aliens and changes direction if at an alien is at an edge
+        self.aliens.update()  # calls update on every alien in group
+
+        # Look for alien-ship collisions
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):
+            self._ship_hit()
+
     def _check_fleet_edges(self):
         """Respond appropriately if any aliens have reached an edge"""
         for alien in self.aliens.sprites():
@@ -172,14 +163,37 @@ class AlienInvasion:
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1
 
-    def _create_alien(self, alien_number, row_number):
-        """Create an alien and place it in the row"""
-        alien = Alien(self)
-        alien_width, alien_height = alien.rect.size
-        alien.x = alien_width + (2 * alien_width) * alien_number
-        alien.rect.x = alien.x
-        alien.rect.y = alien.rect.height + (2 * alien_height) * row_number
-        self.aliens.add(alien)
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien"""
+        # Decrement ships left
+        self.stats.ships_left -= 1
+
+        # Get rid of any remaining aliens and bullets
+        self.aliens.empty()
+        self.bullets.empty()
+
+        # Create a new fleet and center the ship
+        self._create_fleet()
+        self.ship.center_ship()  # new method in ship class
+
+        # Pause
+        sleep(0.5)
+
+    def _update_screen(self):
+        """Update images on the screen and flip to the new screen"""
+        # Step 2 Redraw the screen during each pass through the loop
+        # fill() is a surface method, originally self.bg_color for testing, refactored to settings property
+        self.screen.fill(self.settings.bg_color)
+        # draw ship in its current position which places it on top of the background surface
+        self.ship.blitme()
+        for bullet in self.bullets.sprites():  # goes through list of all sprites in bullets and draw each one
+            bullet.draw_bullet()
+        # draws each element in the group at the position defined by rect, only required argument for draw() is a
+        # surface on which to draw the group elements
+        self.aliens.draw(self.screen)
+        # Make the most recently drawn screen visible
+        pygame.display.flip()
+
 
 if __name__ == '__main__':
     # Make a game instance and run the game
