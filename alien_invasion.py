@@ -5,6 +5,8 @@ import pygame
 # Step 3, creating settings.py and importing initial screen settings
 from settings import Settings
 # Step 4, creating ship.py and importing in class to use
+from time import sleep  # allows pause to game when ship and alien collide
+from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -25,7 +27,7 @@ class AlienInvasion:
         # but refactored after settings.py created
 
         pygame.display.set_caption("Alien Invasion")
-
+        self.stats = GameStats(self)  # create after game window but before other elements
         self.ship = Ship(self)  # the self being passed is the instance of the game which is the one arg needed
         self.bullets = pygame.sprite.Group()  # Group behaves like a list, will store all live bullets
         self.aliens = pygame.sprite.Group()
