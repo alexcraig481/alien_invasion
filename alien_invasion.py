@@ -10,6 +10,7 @@ from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from button import Button
 
 
 class AlienInvasion:
@@ -34,6 +35,9 @@ class AlienInvasion:
         self._create_fleet()
         # Step 2 Set background color
         # self.bg_color = (230, 230, 230) Step 3, no longer needed once settings.py created
+
+        # Create instance of button (is drawn in update screen)
+        self.play_button = Button(self, "Play")
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -208,6 +212,11 @@ class AlienInvasion:
         # draws each element in the group at the position defined by rect, only required argument for draw() is a
         # surface on which to draw the group elements
         self.aliens.draw(self.screen)
+
+        # Draw the play button if the game is inactive on top of other elements
+        if not self.stats.game_active:
+            self.play_button.draw_button()
+
         # Make the most recently drawn screen visible
         pygame.display.flip()
 
