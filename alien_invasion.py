@@ -62,6 +62,14 @@ class AlienInvasion:
                 self._check_keydown_events(event)  # Step 6 - use helper method
             elif event.type == pygame.KEYUP:  # Step 5 Check for keyup event
                 self._check_keyup_events(event)  # Step 6 - use helper method
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play"""
+        if self.play_button.rect.collidepoint(mouse_pos):
+            self.stats.game_active = True
 
     def _check_keydown_events(self, event):  # Step 6 Refactored check_events
         """Respond to key presses"""
